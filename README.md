@@ -511,11 +511,12 @@ read_verilog good_mux.v
 synth -top good_mux
 ```
 ![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20224150.png "Title is optional")
+
 * generate netlist:
 ```bash
 abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 ```
-![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20224220.png" Title is optional")
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20224220.png "Title is optional")
 
 ![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20224228.png "Title is optional")
 
