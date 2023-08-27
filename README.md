@@ -85,6 +85,21 @@ Introduction to ABI and Basic Verification Flow
     * [Simulate C Program using Function Call](https://github.com/aishwarya-2511/PES-ASIC-CLASS#stimulate-c-program-using-function-call "Simulate C Program using Function Call")
 
 
+## DAY 3
+* Introduction to Open-Source Simulator iVerilog
+    * [Introduction to iVerilog Design Testbench](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-iverilog-design-testbench "Introduction to iVerilog Design Testbench")
+
+* Labs using iVerilog and GTKwave
+    * [Introduction to Lab](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-lab "Introduction to Lab")
+    * [Introduction to iVerilog gtkwave part 1](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-iverilog-gtkwave-part-1 "Introduction to iVerilog gtkwave part 1")
+    * [Introduction to iVerilog gtkwave part 2](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-iverilog-gtkwave-part-2 "Introduction to iVerilog gtkwave part 2")
+* Introduction to Yosys and Logic Synthesis
+    * [Introduction to Yosys](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-yosys "Introduction to Yosys")
+    * [Introduction to Logic Synthesis](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-logic-sysnthesis "Introduction to Logic Synthesis")
+* Labs using Yosys and Sky130 PDKs
+    * [Yosys good mux](https://github.com/aishwarya-2511/PES-ASIC-CLASS#yosys-good-mux "Yosys good mux")
+
+
 ## Introduction to basic keywords
 ### Introduction
 * ISA (Instruction Set Archhitecture)
@@ -146,7 +161,7 @@ Using the gcc compiler, compile the program to get the output.
 gcc sumton.c
 .\a.out
 ```
-![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/WhatsApp%20Image%202023-08-20%20at%2010.57.01%20AM.jpeg "Title is optional")
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/WhatsApp%20Image%202023-08-20%20at%205.40.35%20PM.jpeg "Title is optional")
 
 
 ### RISCV GCC Compiler and Disassemble
@@ -334,3 +349,218 @@ Execution: To execute the object file run the command
 spike pk custom1to9.o
 ```
 ![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/WhatsApp%20Image%202023-08-20%20at%206.43.23%20PM.jpeg "Title is optional")
+
+## Introduction to Open-Source Simulator iVerilog
+Simulator: RTL design is checked for adherence to the spec by simulating the design. (iverilog is used here)
+
+Design: Design is the actual verilog code / set of verilog codes which has the intended functionality to meet with the required specification
+
+Testbench: Testbench is the setup to apply stimulus to the design to check its functionality
+
+Simulator looks for changes in input and accordingly changes the output.
+
+Design of Testbench:
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20203815.png "Title is optional")
+
+design + testbench -> to iverilog tool -> gives vcd file -> viewed using gtkwave
+## Labs using iVerilog and GTKwave
+### Introduction to Lab
+* Make directory VSD
+```bash
+mkdir VSD
+```
+```bash
+cd VSD
+```
+* Clone the repo
+```bash
+git clone https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+```
+It should look like this:
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20205852.png "Title is optional")
+
+### Introduction to iVerilog gtkwave part 1
+* Go to this directory:
+```bash
+cd VSD/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+* verilog file and testbench :
+```bash
+iverilog good_mux.v tb_good_mux.v
+```
+```bash
+ls 
+```
+* a.out file will be created, type this command to create vcd file:
+```bash
+./a.out
+```
+* run this to open the file in gtkwave:
+```bash
+gtkwave tb_good_mux.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20215748.png "Title is optional")
+
+### Introduction to iVerilog gtkwave part 2
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20215320.png "Title is optional")
+* Code:
+good_mux.v:
+```C
+module good_mux (input i0 , input i1 , input sel , output reg y);
+always @ (*)
+begin
+	if(sel)
+		y <= i1;
+	else 
+		y <= i0;
+end
+endmodule
+```
+
+tb_good_mux.v:
+```C
+timescale 1ns / 1ps
+module tb_good_mux;
+	// Inputs
+	reg i0,i1,sel;
+	// Outputs
+	wire y;
+
+        // Instantiate the Unit Under Test (UUT)
+	good_mux uut (
+		.sel(sel),
+		.i0(i0),
+		.i1(i1),
+		.y(y)
+	);
+
+	initial begin
+	$dumpfile("tb_good_mux.vcd");
+	$dumpvars(0,tb_good_mux);
+	// Initialize Inputs
+	sel = 0;
+	i0 = 0;
+	i1 = 0;
+	#300 $finish;
+	end
+
+always #75 sel = ~sel;
+always #10 i0 = ~i0;
+always #55 i1 = ~i1;
+endmodule
+```
+* To view file contents:
+```bash
+ vim tb_good_mux.v -o good_mux.v
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20220856.png "Title is optional")
+
+## Introduction to Yosys and Logic Synthesis
+### Introduction to Yosys
+Synthesizer: Tool to convert RTL to netlist. Yosys is used here
+Design + .lib file -> to synthezixer -> gives netlist
+```bash
+read_verilog
+``` 
+used to read the design file
+```bash
+read_liberty
+``` 
+to read the .lib file
+```bash
+write_verilog
+```
+to write out the netlist file
+
+* To verify the synthesis, the netlist and testbench is given to iverilog which creates a vcd file which can be plotted in gtkwave.
+
+### Introduction to Logic Synthesis
+* RTL design: Behavioral representation of req. specification(verilog HDL)
+* Synthesis: RTL to gate level synthesis. Netlist gives details of the conversion to gates and the connections between them
+* .lib file: collections of modules, logic gates, of different flavours
+* Faster and slower cells:
+ * Combinational delay in logic path determines the max speed of operation of digital logic circuit
+ * Hold time is the essential min time for input to be constant after the clock changes
+ * hence we need fast and slow cells
+* Selection of cells
+ * Need to guide the synhesizer to select the flavour of cells that is optimum for the implementation of circuit
+ * fast cells: power and area is compromised
+ * slow cells: slugggish circuit, performance is compromised
+
+
+## Labs using Yosys and Sky130 PDKs
+* Go to directory:
+```bash
+cd verilog_files
+```
+* invoke yosys
+```bash
+yosys
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20224138.png "Title is optional")
+* Read library:
+```bash
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+* Read design:
+```bash
+read_verilog good_mux.v
+```
+* Synthesize:
+```bash
+synth -top good_mux
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20224150.png "Title is optional")
+* generate netlist:
+```bash
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20224220.png" Title is optional")
+
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20224228.png "Title is optional")
+
+
+* To see logic realised:
+```bash
+show
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20224326.png "Title is optional")
+* write netlist:
+```bash
+write_verilog good_mux_netlist.v
+```
+* open netlist:
+```bash
+!gvim good_mux_netlist.v
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-27%20225729.png "Title is optional")
+
+```C
+/* Generated by Yosys 0.32+51 (git sha1 6405bbab1, gcc 12.3.0-1ubuntu1~22.04 -fPIC -Os) */
+
+module good_mux(i0, i1, sel, y);
+  wire _0_;
+  wire _1_;
+  wire _2_;
+  wire _3_;
+  input i0;
+  wire i0;
+  input i1;
+  wire i1;
+  input sel;
+  wire sel;
+  output y;
+  wire y;
+  sky130_fd_sc_hd__mux2_1 _4_ (
+    .A0(_0_),
+    .A1(_1_),
+    .S(_2_),
+    .X(_3_)
+  );
+  assign _0_ = i0;
+  assign _1_ = i1;
+  assign _2_ = sel;
+  assign y = _3_;
+endmodule
+```
+
