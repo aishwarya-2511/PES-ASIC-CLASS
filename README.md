@@ -479,13 +479,13 @@ to write out the netlist file
 * Synthesis: RTL to gate level synthesis. Netlist gives details of the conversion to gates and the connections between them
 * .lib file: collections of modules, logic gates, of different flavours
 * Faster and slower cells:
- * Combinational delay in logic path determines the max speed of operation of digital logic circuit
- * Hold time is the essential min time for input to be constant after the clock changes
- * hence we need fast and slow cells
+	* Combinational delay in logic path determines the max speed of operation of digital logic circuit
+	* Hold time is the essential min time for input to be constant after the clock changes
+	* hence we need fast and slow cells
 * Selection of cells
- * Need to guide the synhesizer to select the flavour of cells that is optimum for the implementation of circuit
- * fast cells: power and area is compromised
- * slow cells: slugggish circuit, performance is compromised
+	* Need to guide the synhesizer to select the flavour of cells that is optimum for the implementation of circuit
+	* fast cells: power and area is compromised
+	* slow cells: slugggish circuit, performance is compromised
 
 
 ## Labs using Yosys and Sky130 PDKs
