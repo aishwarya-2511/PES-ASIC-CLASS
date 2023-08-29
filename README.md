@@ -100,6 +100,15 @@ Introduction to ABI and Basic Verification Flow
     * [Yosys good mux](https://github.com/aishwarya-2511/PES-ASIC-CLASS#yosys-good-mux "Yosys good mux")
 
 
+## DAY 4
+* [Introduction to Timing dot libs](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-timing-dot-libs "Introduction to Timing dot libs")
+* [Hierarchical vs Flat Synthesis](https://github.com/aishwarya-2511/PES-ASIC-CLASS#hierarchical-vs-flat-synthesis "Hierarchical vs Flat Synthesis")
+* [Various Flop Coding Styles and Optimization](https://github.com/aishwarya-2511/PES-ASIC-CLASS#various-flop-coding-styles-and-optimization "Various Flop Coding Styles and Optimization")
+    * why flops and Flop coding styles
+    * lab flop synthesis simulations
+    * interesting optimizations
+
+    
 ## Introduction to basic keywords
 ### Introduction
 * ISA (Instruction Set Archhitecture)
