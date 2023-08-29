@@ -702,7 +702,7 @@ show
 write_verilog -noattr multiple_modules_flat.v
 !gvim multiple_modules_flat.v
 ```
-![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-29%20075327.png"Title is optional")
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-08-29%20075327.png "Title is optional")
 
 multiple_modules_flat.v
 ```C
