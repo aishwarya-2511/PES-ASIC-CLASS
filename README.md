@@ -108,6 +108,11 @@ Introduction to ABI and Basic Verification Flow
     * lab flop synthesis simulations
     * interesting optimizations
 
+## DAY 5
+* [Introduction to Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-optimisatons "Introduction to Optimisations")
+* [Combinational Logic Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#combinational-logic-optimisations "Combinational Logic Optimisations")
+* [Sequential Logic Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#sequential-logic-optimisations "Sequential Logic Optimisations")
+* [Sequential Optimisations for Unused Outputs](https://github.com/aishwarya-2511/PES-ASIC-CLASS#sequential-logic-optimisations-for-unused-outputs "Sequential Optimisations for Unused Outputs")
     
 ## Introduction to basic keywords
 ### Introduction
