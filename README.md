@@ -754,3 +754,176 @@ module multiple_modules(a, b, c, y);
   assign net1 = \u1.y ;
 endmodule
 ```
+## Various Flop Coding Styles and optimization
+* Why flops and Flop coding styles
+ * Due to the different propagaion delay in different branches of a combinational circuit, the circuit is prone to glitches when the input changes.
+ * As the number of combinational circuits increase, the circuit becomes more and more glitchy.
+ * Hence, D Flip Flops are used to remember the state of the output of one stage.
+ * The initialisation of the flip flop can be done by set/rest which can be asynchronous/synchronous.
+
+
+D Flip-Flop with Asynchronous Reset:When the reset is high, the output of the flip-flop is forced to 0, irrespective of the clock signal. Else, on the positive edge of the clock, the stored value is updated at the output.
+
+D Flip_Flop with Asynchronous Set:When the set is high, the output of the flip-flop is forced to 1, irrespective of the clock signal. Else, on positive edge of the clock, the stored value is updated at the output.
+
+D Flip-Flop with Synchronous Reset:When the reset is high on the positive edge of the clock, the output of the flip-flop is forced to 0. Else, on the positive edge of the clock, the stored value is updated at the output.
+
+D Flip-Flop with Asynchronous Reset and Synchronous Reset:When the asynchronous resest is high, the output is forced to 0. When the synchronous reset is high at the positive edge of the clock, the output is forced to 0.
+Else, on the positive edge of the clock, the stored value is updated at the output.
+
+Lab flop synthesis simulations
+
+* DFF with asynchronous reset:
+  
+SIMULATION:
+```bash
+cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+iverilog dff_asyncres.v tb_dff_asyncres.v
+./a.out
+gtkwave tb_dff_asyncres.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20104947.png "Title is optional")
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20105033.png "Title is optional")
+
+
+SYNTHESIS:
+```bash
+yosys
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog dff_asyncres.v
+synth -top dff_asyncres
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20105425.png "Title is optional")
+
+
+* DFF with asynchronous set:
+  
+SIMULATION:
+```bash
+cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+iverilog dff_async_set.v tb_dff_async_set.v
+./a.out
+gtkwave tb_dff_async_set.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20105914.png "Title is optional")
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20105927.png "Title is optional")
+
+
+SYNTHESIS:
+```bash
+yosys
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog dff_async_set.v
+synth -top dff_async_set
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20110100.png "Title is optional")
+
+
+
+* DFF with synchronous reset:
+  
+SIMULATION:
+```bash
+cd vsd/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+iverilog dff_syncres.v tb_dff_syncres.v
+./a.out
+gtkwave tb_dff_syncres.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20110431.png "Title is optional")
+
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20110508.png "Title is optional")
+
+
+SYNTHESIS:
+```bash
+yosys
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog dff_syncres.v
+synth -top dff_syncres
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20110624.png "Title is optional")
+
+
+Interesting optimisations:
+* Multiplying a number by 2^n is done by just appending the number with n zeros.
+mult_2.v
+```C
+module mul2 (input [2:0] a, output [3:0] y);
+	assign y = a * 2;
+endmodule
+```
+```C
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib  
+read_verilog mult_2.v
+synth -top mul2
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+write_verilog -noattr mul2_netlist.v
+!gvim mul2_netlist.v
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20112602.png "Title is optional")
+
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20112612.png "Title is optional")
+
+mul2_netlist.v
+```C
+/* Generated by Yosys 0.32+51 (git sha1 6405bbab1, gcc 12.3.0-1ubuntu1~22.04 -fPIC -Os) */
+
+module mul2(a, y);
+  input [2:0] a;
+  wire [2:0] a;
+  output [3:0] y;
+  wire [3:0] y;
+  assign y = { a, 1'h0 };
+endmodule
+```
+(As expected)
+
+
+* Multiplying a number by 9 is done by just concatenating the same number twice. It does not require any hardware.
+  
+mult_8.v
+```C
+module mult8 (input [2:0] a , output [5:0] y);
+	assign y = a * 9;
+endmodule
+```
+
+```C
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib  
+read_verilog mult_2.v
+synth -top mult8
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+show
+write_verilog -noattr mult8_netlist.v
+!gvim mult8_netlist.v
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20112955.png "Title is optional")
+
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-03%20112924.png "Title is optional")
+
+
+mult8_netlist.v
+```C
+/* Generated by Yosys 0.32+51 (git sha1 6405bbab1, gcc 12.3.0-1ubuntu1~22.04 -fPIC -Os) */
+
+module mult8(a, y);
+  input [2:0] a;
+  wire [2:0] a;
+  output [5:0] y;
+  wire [5:0] y;
+  assign y = { a, a };
+endmodule
+```
+
+
+
