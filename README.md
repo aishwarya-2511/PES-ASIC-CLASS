@@ -113,7 +113,16 @@ Introduction to ABI and Basic Verification Flow
 * [Combinational Logic Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#Combinational-Logic-Optimisations "Combinational Logic Optimisations")
 * [Sequential Logic Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#Sequential-logic-optimizations "Sequential Logic Optimisations")
 * [Sequential Optimisations for Unused Outputs](https://github.com/aishwarya-2511/PES-ASIC-CLASS#sequential-optimisations-for-unused-outputs "Sequential Optimisations for Unused Outputs")
-    
+
+
+## DAY 6
+* [GLS Synthesis Simulation Mismatch and Blocking Non blocking Statements](https://github.com/aishwarya-2511/PES-ASIC-CLASS#gls-synthesis-simulation-mismatch-and-blocking-non-blocking-statements "GLS Synthesis Simulation Mismatch and Blocking Non blocking Statements")
+* [Labs on GLS and Synthesis Simulation Mismatch](https://github.com/aishwarya-2511/PES-ASIC-CLASS#labs-on-gls-and-synthesis-simulation-mismatch "Labs on GLS and Synthesis Simulation Mismatch")
+    * ternary_operator_mux
+    * bad_mux
+* [Labs on Synth Sim Mismatch for Blocking Statement](https://github.com/aishwarya-2511/PES-ASIC-CLASS#labs-on-synth-sim-mismatch-for-blocking-statement "Labs on Synth Sim Mismatch for Blocking Statement")
+
+  
 ## Introduction to basic keywords
 ### Introduction
 * ISA (Instruction Set Archhitecture)
