@@ -109,10 +109,10 @@ Introduction to ABI and Basic Verification Flow
     * interesting optimizations
 
 ## DAY 5
-* [Introduction to Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-optimisatons "Introduction to Optimisations")
-* [Combinational Logic Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#combinational-logic-optimisations "Combinational Logic Optimisations")
-* [Sequential Logic Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#sequential-logic-optimisations "Sequential Logic Optimisations")
-* [Sequential Optimisations for Unused Outputs](https://github.com/aishwarya-2511/PES-ASIC-CLASS#sequential-logic-optimisations-for-unused-outputs "Sequential Optimisations for Unused Outputs")
+* [Introduction to Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#introduction-to-optimisations "Introduction to Optimisations")
+* [Combinational Logic Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#Combinational-Logic-Optimisations "Combinational Logic Optimisations")
+* [Sequential Logic Optimisations](https://github.com/aishwarya-2511/PES-ASIC-CLASS#Sequential-logic-optimizations "Sequential Logic Optimisations")
+* [Sequential Optimisations for Unused Outputs](https://github.com/aishwarya-2511/PES-ASIC-CLASS#sequential-optimisations-for-unused-outputs "Sequential Optimisations for Unused Outputs")
     
 ## Introduction to basic keywords
 ### Introduction
