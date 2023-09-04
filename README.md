@@ -1303,6 +1303,137 @@ show
 ![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20225112.png "Title is optional")
 
 
+## GLS Synthesis Simulation Mismatch and Blocking Non blocking Statements
+* GLS Concepts And Flow Using Iverilog
+    * Gate Level Simualtion: Its technique used in digital design and verification to validate the functionality of a digital circuit at the gate-level implementation. It involves simulating the circuit using the actual logic gates and flip-flops that make up the design, as opposed to higher-level abstractions like RTL (Register Transfer Level) descriptions.
+    * Synthesis-Simulation Mismatch: Refers to a situation in digital design where the behavior of a circuit, in simulation doesn't match the expected or desired behavior of the circuit after it has been synthesized. Can occur due to various reasons, such as timing issues, optimization conflicts, and differences in modeling between the simulation and synthesis tools.
+    * Blocking Statements: Are executed sequentially in the order they appear in the code and have an immediate effect on signal assignments. Eg: Y=1'b0
+    * Non-Blocking Statements: Are used to model concurrent signal updates, where all assignments are evaluated simultaneously and then scheduled to be updated at the end of the time step. Eg: Y<=1'b0
+    * Caveats with Blocking Statements:
+        * Procedural Execution
+        * Lack of Parallelism
+        * Order Dependency
+        * Combinational Logic Only
+        * Limited for Testbenches
+        * Race Conditions
+## Labs on GLS and Synthesis Simulation Mismatch
+* ternary_operator_mux.v
+```C
+module ternary_operator_mux (input i0 , input i1 , input sel , output y);
+	assign y = sel?i1:i0;
+endmodule
+```
+Simulation:
+```C
+iverilog ternary_operator_mux.v tb_ternary_operator_mux.v
+./a.out
+gtkwave tb_ternary_operator_mux.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20232023.png "Title is optional")
+
+Synthesis:
+```C
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog ternary_operator_mux.v
+synth -top ternary_operator_mux
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+write_verilog -noattr ternary_operator_mux_netlist.v
+show
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20232343.png "Title is optional")
+
+GLS To to Gate level simulation, Invoke iverilog with verilog modules:
+```C
+iverilog ../my_lib/verilog_model/primitives.v ../my_lib/verilog_model/sky130_fd_sc_hd.v ternary_operator_mux_netlist.v tb_ternary_operator_mux.v
+./a.out
+gtkwave tb_ternary_operator_mux.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20232458.png "Title is optional")
+
+
+* bad_mux.v
+```C
+module bad_mux (input i0 , input i1 , input sel , output reg y);
+always @ (sel)
+begin
+	if(sel)
+		y <= i1;
+	else 
+		y <= i0;
+end
+endmodule
+```
+Simulation:
+```C
+iverilog bad_mux.v tb_bad_mux.v
+./a.out
+gtkwave tb_bad_mux.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20232926.png "Title is optional")
+
+Synthesis:
+```C
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog bad_mux.v
+synth -top bad_mux
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+write_verilog -noattr bad_mux_netlist.v
+show
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20233043.png "Title is optional")
+
+GLS To to Gate level simulation, Invoke iverilog with verilog modules:
+```C
+iverilog ../my_lib/verilog_model/primitives.v ../my_lib/verilog_model/sky130_fd_sc_hd.v bad_mux_netlist.v tb_bad_mux.v
+./a.out
+gtkwave tb_bad_mux.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20233148.png "Title is optional")
+
+
+
+## Labs on Synth Sim Mismatch for Blocking Statement
+blocking_caveat.v
+```C
+module blocking_caveat (input a , input b , input  c, output reg d); 
+reg x;
+always @ (*)
+begin
+	d = x & c;
+	x = a | b;
+end
+endmodule
+```
+Simulation:
+```C
+iverilog blocking_caveat.v tb_blocking_caveat.v
+./a.out
+gtkwave tb_blocking_caveat.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20233836.png "Title is optional")
+
+Synthesis:
+```C
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog blocking_caveat.v
+synth -top blocking_caveat
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+write_verilog -noattr blocking_caveat_netlist.v
+show
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20233945.png "Title is optional")
+
+GLS To to Gate level simulation, Invoke iverilog with verilog modules:
+```C
+iverilog ../my_lib/verilog_model/primitives.v ../my_lib/verilog_model/sky130_fd_sc_hd.v blocking_caveat_netlist.v tb_blocking_caveat.v
+./a.out
+gtkwave tb_blocking_caveat.vcd
+```
+![picture alt](https://github.com/aishwarya-2511/PES-ASIC-CLASS/blob/main/images/Screenshot%202023-09-04%20234131.png "Title is optional")
+
+
+
+
 
 
 
